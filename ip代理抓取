@@ -1,0 +1,62 @@
+import requests
+from lxml import etree
+import xlwt
+import time
+
+num = int(input('请输入需要的页数：'))
+print('请等待'+str(num)+'秒')
+page=1
+start_url= 'https://www.kuaidaili.com/free/inha/'
+ip_list=[]
+port_list=[]
+leixing_list=[]
+action_list=[]
+while page<num:
+    url = start_url+str(page)+'/'
+
+
+
+    response = requests.get(url)
+    html_data = response.text
+
+    html = etree.HTML(html_data)
+
+    ip_lists = html.xpath('//td[@data-title="IP"]/text()')
+    port_lists = html.xpath('//td[@data-title="PORT"]/text()')
+    leixing_lists = html.xpath('//td[@data-title="类型"]/text()')
+    action_lists = html.xpath('//td[@data-title="位置"]/text()')
+    
+    #daili = dict(zip(ip_list,port_list,leixing_list,action_list))
+    #print(ip_list)
+    ip_list = ip_list+ip_lists
+    port_list=port_list+port_lists
+    leixing_list = leixing_list+leixing_lists
+    action_list = action_list+action_lists
+
+
+    page +=1
+    #因为网站加了时间反爬，所以不能快速抓取，所以设置延迟
+    time.sleep(1)
+
+
+
+#用了xlwt操作excel进行写入    
+wbk = xlwt.Workbook()
+sheet = wbk.add_sheet('my_ip')
+a=0
+b=0
+c=0
+d=0
+for ip in ip_list:
+    sheet.write(a,0,ip)
+    a +=1
+for port in port_list:
+    sheet.write(b,1,port)
+    b +=1
+for leixing in leixing_list:
+    sheet.write(c,2,leixing)
+    c +=1
+for action in action_list:
+    sheet.write(d,3,action)
+    d +=1
+wbk.save("D://myiplist.xls")
