@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<body>
+		
+		<div>
+		<h3>标题:{{ articless.title }}</h3>
+		<h1>{{ articless.content}}</h1>
+		</div>
+		<div>
+		<p>评论：</p>
+		{% for comment in Comments %}
+		<p>{{comment.detail}}</p>
+		{% endfor %}
+		</div>
+		<div>
+		<form action="/comment/add/" method="post"> {% csrf_token %} 
+		<p>评论内容:<textarea name = "detail"></textarea></p>
+		<input type = "hidden" name="article" value="{{ articless.id }}">
+		<p><input type="submit"></p>
+		</form>
+		</div>
+	</body>
+</html>

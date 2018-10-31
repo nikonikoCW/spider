@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<body>
+	<h2>博客列表</h2>
+		<a href = "/add/">添加</a>
+		{% for article in articles %}
+		<div>
+		<h3>标题:<a href = "/view/{{article.id}}">{{ article.title }}</a></h3>
+		<h1>{{ article.content}}</h1>
+		</div>
+		{% endfor %}
+	</body>
+</html>
